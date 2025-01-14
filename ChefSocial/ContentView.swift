@@ -14,6 +14,7 @@ struct ContentView: View {
                 .imageScale(.large)
                 .foregroundStyle(.tint)
             Text("I love you, Suzy, from Mike blah blah blah hello these are Suzys changes :)")
+            Text("Test branch changes")
         }
         .padding()
     }
