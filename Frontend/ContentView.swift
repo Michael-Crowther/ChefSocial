@@ -1,35 +1,54 @@
-//
-//  ContentView.swift
-//  ChefSocial
-//
-//  Created by Michael Crowther and Suzy Hludzinski on 1/14/25.
-//
-
 import SwiftUI
+import Foundation
 
-//The View protocol represents a peice of UI. A struct is lightweight data structure, encapsulated by {}
+//ViewModels are intended to fetch data from the backend and manage the state that the ProfileListView observes
+class ViewModel: ObservableObject {
+    //@Published allows for reactivity when backendResponse changes, it changes ProfileListView viewModel instance
+    @Published var backendResponse: String? = nil
+
+    func fetch(){
+        let url = URL(string: "http://127.0.0.1:8080")!
+        
+        let task = URLSession.shared.dataTask(with: url) {data, response, error in
+            guard let data = data, error == nil else { return }
+            
+            let responseString = String(data: data, encoding: .utf8);
+            
+            DispatchQueue.main.async {
+                self.backendResponse = responseString
+            }
+        }
+        task.resume()
+    }
+}
+
+//View is responsible for displaying UI elements, initiating data fetching, and reacting to state changes
 struct ProfileListView: View {
+    @State var maxSize = 100;
+    @StateObject var viewModel = ViewModel()
+    
     var body: some View {
-        @State var maxSize = 100;
-        //body is required by View protocol. It contains logic and visual representation of what is in the View. `some ===============================iew` is a return type. It returns a View element
+        VStack {
+            // Display the backend response
+            Text(viewModel.backendResponse ?? "Cannot access backend...")
+                .underline(color: .red)
+                .bold()
+                .padding()
+        }.onAppear{
+            viewModel.fetch()
+        }
         
-        Text("Hello Chef!")
-            .underline(color: .red)
-            .bold()
-            //.padding()  //declarative statement. We should look more into declarative vs. imperative programming
         
-        //This is how you initialize an array
         let profile = ["Personal Information", "Friends and Followers", "Saved Posts", "Recipes", "Settings"]
         
-        //NavigationView is a nav container that gives us goodies like a Title, and the ability to navigate between links
         NavigationView {
-            List(profile.indices, id: \.self) { index in //Changed this to pull the indices out of profile array
-                HStack { //Horizontal Stack
-                    Text(profile[index]) //directly accesses the array elements
-                    Spacer() //Space between words and icon. Similar to "justify-between" in CSS
-                    Image(systemName: index % 2 == 0 ? "star" : "star.fill") // `%` finds the remainder of index and 2. The remainder is 0 if it's an even number. The remainder is 1 if it's an odd number. This is how you can alternate elements being filled or not. This works because numbers are always even then odd in an alternating fashion
+            List(profile.indices, id: \.self) { index in
+                HStack {
+                    Text(profile[index])
+                    Spacer()
+                    Image(systemName: index % 2 == 0 ? "star" : "star.fill")
                 }
-               
+                
             }
             .navigationTitle("Profile")
         }
@@ -37,10 +56,9 @@ struct ProfileListView: View {
         
         Button("Switch Users") {
             print("Button tapped!")
-                
+            
         }
         .frame(width: 200, height: 50) // Set width and height
-        //.padding() // Add some padding inside the button for better spacing
         .background(
             LinearGradient(
                 gradient: Gradient(colors: [.orange, .red]), // Gradient colors
@@ -61,7 +79,7 @@ struct GalleryView: View {
     var body: some View {
         ProfileListView()
         Button("Log Out") {}
-
+        
     }
 }
 

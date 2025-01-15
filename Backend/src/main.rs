@@ -8,7 +8,7 @@ use std::net::SocketAddr;
 async fn main() {
     let app = Router::new().route("/", get(handler));
 
-    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    let addr = SocketAddr::from(([127, 0, 0, 1], 8080));
     println!("Server running at http://{}", addr);
 
     axum::Server::bind(&addr)
@@ -18,5 +18,5 @@ async fn main() {
 }
 
 async fn handler() -> &'static str {
-    "Hello, from Rust Axum!"
+    "Hello, from Rust Backend!"
 }
