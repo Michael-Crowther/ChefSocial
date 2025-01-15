@@ -8,7 +8,7 @@
 import SwiftUI
 
 //The View protocol represents a peice of UI. A struct is lightweight data structure, encapsulated by {}
-struct AnimalListView: View {
+struct ProfileListView: View {
     var body: some View {
         //body is required by View protocol. It contains logic and visual representation of what is in the View. `some ===============================iew` is a return type. It returns a View element
         
@@ -49,14 +49,23 @@ struct AnimalListView: View {
     }
 }
 
-//ContentView is required for the #Preview method
-struct ContentView: View {
+struct GalleryView: View {
     var body: some View {
-        AnimalListView()
+        ProfileListView()
+        Button("Wuddup") {}
+
     }
 }
 
+struct ContentView: View {
+    var body: some View {
+        GalleryView()
+    }
+}
+
+
+
 //Built in SwiftUI method for displaying View on device
 #Preview {
-    AnimalListView()
+    GalleryView()
 }
