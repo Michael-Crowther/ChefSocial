@@ -10,12 +10,16 @@ import SwiftUI
 //The View protocol represents a peice of UI. A struct is lightweight data structure, encapsulated by {}
 struct ProfileListView: View {
     var body: some View {
+        @State var maxSize = 100;
         //body is required by View protocol. It contains logic and visual representation of what is in the View. `some ===============================iew` is a return type. It returns a View element
         
-        Text("Hello Chef!") //declarative statement. We should look more into declarative vs. imperative programming
+        Text("Hello Chef!")
+            .underline(color: .red)
+            .bold()
+            //.padding()  //declarative statement. We should look more into declarative vs. imperative programming
         
         //This is how you initialize an array
-        let profile = ["Personal Information", "Friends and Followers", "Saved Posts", "Recipe", "Settings"]
+        let profile = ["Personal Information", "Friends and Followers", "Saved Posts", "Recipes", "Settings"]
         
         //NavigationView is a nav container that gives us goodies like a Title, and the ability to navigate between links
         NavigationView {
@@ -27,7 +31,7 @@ struct ProfileListView: View {
         }
         
         
-        Button("Tap me") {
+        Button("Switch Users") {
             print("Button tapped!")
                 
         }
@@ -45,14 +49,14 @@ struct ProfileListView: View {
         .opacity(0.9) // Set transparency of the button (background in this case)
         .shadow(radius: 10) // Add a shadow for better visibility
         .scaleEffect(1)
-        .animation(.linear(duration: 1), value: 1)
+        .animation(.linear(duration: 2), value: 2)
     }
 }
 
 struct GalleryView: View {
     var body: some View {
         ProfileListView()
-        Button("Wuddup") {}
+        Button("Log Out") {}
 
     }
 }
