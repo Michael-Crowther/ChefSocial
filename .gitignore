@@ -1,8 +1,8 @@
 # Ignore Rust build artifacts
-rust-backend/target/
-rust-backend/Cargo.lock
-rust-backend/.idea/
-rust-backend/.vscode/
+Backend/target/
+Backend/Cargo.lock
+Backend/.idea/
+Backend/.vscode/
 
 # Ignore other common files
 *.DS_Store
