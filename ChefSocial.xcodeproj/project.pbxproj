@@ -30,9 +30,9 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		61B7CBE42D38307100931D13 /* ChefSocial */ = {
+		61A0C72F2D38397600F2822A /* Frontend */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ChefSocial;
+			path = Frontend;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -65,8 +65,8 @@
 		6152CEAD2D36B925001E0C18 = {
 			isa = PBXGroup;
 			children = (
-				61B7CBE42D38307100931D13 /* ChefSocial */,
 				6152CEB72D36B925001E0C18 /* Products */,
+				61A0C72F2D38397600F2822A /* Frontend */,
 			);
 			sourceTree = "<group>";
 		};
@@ -96,7 +96,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				61B7CBE42D38307100931D13 /* ChefSocial */,
+				61A0C72F2D38397600F2822A /* Frontend */,
 			);
 			name = ChefSocial;
 			packageProductDependencies = (
@@ -377,7 +377,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"ChefSocial/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Frontend/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -411,7 +411,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"ChefSocial/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Frontend/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
