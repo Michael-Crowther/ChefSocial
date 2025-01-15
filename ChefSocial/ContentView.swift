@@ -19,9 +19,13 @@ struct ProfileListView: View {
         
         //NavigationView is a nav container that gives us goodies like a Title, and the ability to navigate between links
         NavigationView {
-            //List displays a vertically scrollable list of items, all self-identifying here
-            List(profile, id: \.self) { category in
-                Text(category) //Create a Text element for each animal
+            List(profile.indices, id: \.self) { index in //Changed this to pull the indices out of profile array
+                HStack { //Horizontal Stack
+                    Text(profile[index]) //directly accesses the array elements
+                    Spacer() //Space between words and icon. Similar to "justify-between" in CSS
+                    Image(systemName: index % 2 == 0 ? "star" : "star.fill") // `%` finds the remainder of index and 2. The remainder is 0 if it's an even number. The remainder is 1 if it's an odd number. This is how you can alternate elements being filled or not. This works because numbers are always even then odd in an alternating fashion
+                }
+               
             }
             .navigationTitle("Profile")
         }
