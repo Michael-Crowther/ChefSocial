@@ -77,9 +77,8 @@ struct ProfileListView: View {
 
 struct GalleryView: View {
     var body: some View {
-        ProfileListView()
         Button("Log Out") {}
-        
+        ProfileListView()
     }
 }
 
