@@ -11,6 +11,7 @@ use fake::Fake;
 
 fn main() {
     //load env vars from .env
+    //blah
     dotenv().ok();
 
     //connect to db
