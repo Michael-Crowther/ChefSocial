@@ -1,0 +1,18 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo Installing Rust...
+      - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      - source $HOME/.cargo/env
+  build:
+    commands:
+      - echo Building the Rust application...
+      - cargo build --release
+  post_build:
+    commands:
+      - echo Build completed on `date`
+# artifacts:
+#   files:
+#     - target/release/your_rust_binary

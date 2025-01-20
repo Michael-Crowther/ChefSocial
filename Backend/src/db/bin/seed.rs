@@ -2,12 +2,12 @@ use diesel::prelude::*;
 use dotenvy::dotenv;
 
 use rust_backend::db::establish_connection;
-use rust_backend::db::models::{NewUser};
+use rust_backend::db::models::NewUser;
 use rust_backend::db::schema::users::dsl::*;
 
-use fake::Fake;
 use fake::faker::internet::en::FreeEmail;
 use fake::faker::name::en::{FirstName, LastName};
+use fake::Fake;
 
 fn main() {
     //load env vars from .env
@@ -38,7 +38,10 @@ fn main() {
     }
 
     // use batch insert to insert all users at once
-    let inserted_count = diesel::insert_into(users).values(&new_users).execute(conn).expect("Error inserting fake users");
+    let inserted_count = diesel::insert_into(users)
+        .values(&new_users)
+        .execute(conn)
+        .expect("Error inserting fake users");
 
     println!("Inserted {} fake users", inserted_count);
 }
