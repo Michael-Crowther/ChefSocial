@@ -1,7 +1,7 @@
 import Foundation
 
 func fetchData<T: Decodable>(from endpoint: String) async throws -> T {
-    let baseURL = "http://127.0.0.1:8080" //local IP address
+    let baseURL = "http://127.0.0.1:3001" //local IP address
     guard let fullURL = URL(string: baseURL + endpoint) else {
         throw URLError(.badURL)
     }

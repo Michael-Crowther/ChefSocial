@@ -27,7 +27,7 @@ RUN cargo build --release
 RUN cargo run --bin seed
 
 # Expose the port your application will run on (change if necessary)
-EXPOSE 8080
+EXPOSE 3001
 
 # Command to run your application
 CMD ["./target/release/rust-backend"]

@@ -35,41 +35,6 @@ struct ProfileListView: View {
                 await viewModel.fetchUser()
             }
         }
-        
-        
-        let profile = ["Personal Information", "Friends and Followers", "Saved Posts", "Recipes", "Settings"]
-        
-        NavigationView {
-            List(profile.indices, id: \.self) { index in
-                HStack {
-                    Text(profile[index])
-                    Spacer()
-                    Image(systemName: index % 2 == 0 ? "star" : "star.fill")
-                }
-                
-            }
-            .navigationTitle("Profile")
-        }
-        
-        
-        Button("Switch Users") {
-            print("Button tapped!")
-            
-        }
-        .frame(width: 200, height: 50)
-        .background(
-            LinearGradient(
-                gradient: Gradient(colors: [.orange, .red]),
-                startPoint: .top,
-                endPoint: .bottom
-            )
-        )
-        .cornerRadius(75)
-        .foregroundColor(.white)
-        .opacity(0.9)
-        .shadow(radius: 10)
-        .scaleEffect(1)
-        .animation(.linear(duration: 2), value: 2)
     }
 }
 

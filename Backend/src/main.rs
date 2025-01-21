@@ -11,7 +11,7 @@ async fn main() {
         .route("/", get(handler))
         .route("/random-user", get(random_user_handler));
 
-    let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
+    let addr = SocketAddr::from(([0, 0, 0, 0], 3001));
     println!("Server running at http://{}", addr);
 
     axum::Server::bind(&addr)
