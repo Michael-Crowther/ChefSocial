@@ -1,23 +1,21 @@
 import SwiftUI
 import Foundation
 
-struct User: Codable {
-    let id: Int
-    let name: String
-    let user_name: String
-    let display_name: String
-    let email: String
-    let password_hash: String
-}
-
 
 class ViewModel: ObservableObject {
+    struct User: Codable {
+        let id: Int
+        let name: String
+        let user_name: String
+        let display_name: String
+        let email: String
+        let password_hash: String
+    }
+    
     @Published var user: User? = nil
     
     func fetchUser() async {
-        guard let url = URL(string: "http://127.0.0.1:8080/random-user") else { return }
-        
-        user = try? await fetchData(from: url)
+        user = try? await fetchData(from: "/random-user")
     }
 }
 

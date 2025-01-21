@@ -1,0 +1,6 @@
+[tasks.run]
+description = "Run the seed script and start the backend in Docker"
+script = [
+    "docker build -t rust-backend .",
+    "docker run -p 8080:8080 rust-backend"
+]
