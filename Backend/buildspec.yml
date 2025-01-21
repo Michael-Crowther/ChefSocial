@@ -1,19 +1,25 @@
 version: 0.2
 
 phases:
-  pre_build:
-    commands:
-      - echo "Logging in to Amazon ECR..."
-      - aws ecr get-login-password --region us-west-1 | docker login --username AWS --password-stdin 831511836258.dkr.ecr.us-west-1.amazonaws.com
   build:
     commands:
-      - echo "Building the Docker image..."
-      - docker build -t rust-image .
-      - docker tag rust-image:latest 831511836258.dkr.ecr.us-west-1.amazonaws.com/simple-docker-service-06cf555716e1:latest
+      # Build the Rust backend using Docker
+      - echo "Building the Rust backend with Docker..."
+      - docker build -t rust-backend -f ./Backend/Dockerfile ./Backend
+      - docker tag rust-backend:latest 831511836258.dkr.ecr.us-west-1.amazonaws.com/rust-backend:latest
+
   post_build:
     commands:
-      - echo "Pushing the Docker image..."
-      - docker push 831511836258.dkr.ecr.us-west-1.amazonaws.com/simple-docker-service-06cf555716e1:latest
+      # Push the Docker image to Amazon ECR
+      - echo "Pushing the Docker image to Amazon ECR..."
+      - aws ecr get-login-password --region us-west-1 | docker login --username AWS --password-stdin 831511836258.dkr.ecr.us-west-1.amazonaws.com
+      - docker push 831511836258.dkr.ecr.us-west-1.amazonaws.com/rust-backend:latest
+      - echo "Docker image pushed successfully."
 
 artifacts:
-  files: []
+  files:
+    - Backend/Dockerfile
+    - Backend/Cargo.toml
+    - Backend/Cargo.lock
+    - Backend/src/**/*
+    - Backend/static/**/*
