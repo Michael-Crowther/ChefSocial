@@ -7,7 +7,7 @@
 import SwiftUI
 import Foundation
 
-class ViewModel: ObservableObject {
+class UserViewModel: ObservableObject {
     struct User: Codable {
         let id: Int
         let name: String
@@ -24,24 +24,33 @@ class ViewModel: ObservableObject {
     }
 }
 
-class ViewModel: ObservableObject {
-    //fetch recipes here
+class RecipeViewModel: ObservableObject {
+    struct Recipe: Codable {
+        let id: Int
+        let name: String
+        let image_urls: String
+        let ingredients: String
+        let category: String
+        let author: String
+    }
+    
+    @Published var recipes: [Recipe]? = nil
+    
+    func fetchRecipes() async {
+        recipes = try? await fetchData(from: "/recipes")
+    }
 }
 
 struct HomeView: View {
     @State var maxSize = 100;
-    @StateObject var viewModel = ViewModel()
-    
-    let columns = [
-        GridItem(.flexible()),
-        GridItem(.flexible()),
-    ]
+    @StateObject var userViewModel = UserViewModel()
+    @StateObject var recipeViewModel = RecipeViewModel()
     
     var body: some View {
         VStack(spacing: 0) {
             // Header Section
             VStack {
-                if let user = viewModel.user {
+                if let user = userViewModel.user {
                     Text("Hello, \(user.name)!")
                         .font(.title)
                         .fontWeight(.bold)
@@ -60,22 +69,37 @@ struct HomeView: View {
             // Main Content Section
             ScrollView {
                 VStack{
-                    ForEach(0..<30, id: \.self) { index in
-                        Text("Item \(index + 1)")
+                    if let recipes = recipeViewModel.recipes {
+                        ForEach(recipes.indices, id: \.self) { index in
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text(recipes[index].name)
+                                    .font(.headline)
+                                Text(recipes[index].author)
+                                    .font(.subheadline)
+                                    .foregroundColor(.gray)
+                            }
+                            .frame(height: 250)
                             .padding()
-                            .frame(maxWidth: .infinity, idealHeight: 300)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                             .background(Color.gray.opacity(0.2))
                             .cornerRadius(8)
+                            .padding(.horizontal)
+                        }
+                        
+                        .frame(maxWidth: .infinity)
+                        .padding(3)
+                    } else {
+                        Text("No recipes available.")
+                            .padding()
+                            .foregroundColor(.gray)
                     }
-                    
-                    .frame(maxWidth: .infinity)
-                    .padding()
                 }
             }
         }
         .onAppear {
             Task {
-                await viewModel.fetchUser()
+                await userViewModel.fetchUser()
+                await recipeViewModel.fetchRecipes()
             }
         }
     }
