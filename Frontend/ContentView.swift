@@ -29,7 +29,7 @@ struct ContentView: View {
                     Text("Profile")
                 }
         }
-        .accentColor(.orange)
+        .accentColor(Color(hex: "#F15A24"))
         
     }
 }

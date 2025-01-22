@@ -63,7 +63,7 @@ struct HomeView: View {
             }
             .frame(maxWidth: .infinity)
             .frame(height: 60)
-            .background(Color.orange)
+            .background(Color(hex: "#F15A24"))
             .padding(.bottom, 8)
             
             // Main Content Section
