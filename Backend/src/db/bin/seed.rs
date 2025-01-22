@@ -3,7 +3,9 @@ use dotenvy::dotenv;
 
 use rust_backend::db::establish_connection;
 use rust_backend::db::models::NewUser;
+use rust_backend::db::schema::recipes::dsl::*;
 use rust_backend::db::schema::users::dsl::*;
+use rust_backend::db::seed_data::fake_recipes;
 
 use fake::faker::internet::en::FreeEmail;
 use fake::faker::name::en::{FirstName, LastName};
@@ -18,7 +20,6 @@ fn main() {
     let conn = &mut establish_connection();
 
     let num_fake_users = 10;
-
     let mut new_users = Vec::new();
 
     for _ in 0..num_fake_users {
@@ -39,10 +40,22 @@ fn main() {
     }
 
     // use batch insert to insert all users at once
-    let inserted_count = diesel::insert_into(users)
+    let inserted_users = diesel::insert_into(users)
         .values(&new_users)
         .execute(conn)
         .expect("Error inserting fake users");
 
-    println!("Inserted {} fake users", inserted_count);
+    let mut new_recipes = Vec::new();
+
+    for fake_recipe in fake_recipes() {
+        new_recipes.push(fake_recipe);
+    }
+
+    let inserted_recipes = diesel::insert_into(recipes)
+        .values(&new_recipes)
+        .execute(conn)
+        .expect("Error inserting fake recipes");
+
+    println!("Inserted {} fake users", inserted_users);
+    println!("Inserted {} fake recipes", inserted_recipes);
 }

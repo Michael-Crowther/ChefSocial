@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-struct AddPostView: View {
+struct AddRecipeView: View {
     var body: some View {
         NavigationView {
             VStack {
@@ -15,4 +15,8 @@ struct AddPostView: View {
             .navigationTitle("Add Post")
         }
     }
+}
+
+#Preview {
+    ContentView()
 }

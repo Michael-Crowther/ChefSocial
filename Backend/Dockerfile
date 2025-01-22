@@ -29,5 +29,5 @@ RUN cargo run --bin seed
 # Expose the port your application will run on (change if necessary)
 EXPOSE 3001
 
-# Command to run your application
-CMD ["./target/release/rust-backend"]
+# Command to run migrations and run application
+CMD ["sh", "-c", "diesel migration run && ./target/release/your_app"]

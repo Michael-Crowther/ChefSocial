@@ -24,6 +24,10 @@ class ViewModel: ObservableObject {
     }
 }
 
+class ViewModel: ObservableObject {
+    //fetch recipes here
+}
+
 struct HomeView: View {
     @State var maxSize = 100;
     @StateObject var viewModel = ViewModel()
@@ -55,16 +59,15 @@ struct HomeView: View {
             
             // Main Content Section
             ScrollView {
-                VStack(spacing: 16) {
-                    LazyVGrid(columns: columns, spacing: 16) {
-                        ForEach(0..<30, id: \.self) { index in
-                            Text("Item \(index + 1)")
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.gray.opacity(0.2))
-                                .cornerRadius(8)
-                        }
+                VStack{
+                    ForEach(0..<30, id: \.self) { index in
+                        Text("Item \(index + 1)")
+                            .padding()
+                            .frame(maxWidth: .infinity, idealHeight: 300)
+                            .background(Color.gray.opacity(0.2))
+                            .cornerRadius(8)
                     }
+                    
                     .frame(maxWidth: .infinity)
                     .padding()
                 }

@@ -17,10 +17,10 @@ struct ContentView: View {
                     Text("Search")
                 }
             
-            AddPostView()
+            AddRecipeView()
                 .tabItem {
                     Image(systemName: "plus.circle")
-                    Text("Add Post")
+                    Text("Add Recipe")
                 }
             
             ProfileView()
