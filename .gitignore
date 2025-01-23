@@ -7,3 +7,5 @@ Backend/.vscode/
 # Ignore other common files
 *.DS_Store
 *.log
+xcuserdata/*/UserInterfaceState.xcuserstate
+
