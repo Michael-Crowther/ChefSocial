@@ -78,7 +78,7 @@ struct HomeView: View {
                                     .font(.subheadline)
                                     .foregroundColor(.gray)
                             }
-                            .frame(height: 250)
+                            .frame(height: 200)
                             .padding()
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .background(Color.gray.opacity(0.2))

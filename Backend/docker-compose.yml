@@ -1,0 +1,7 @@
+services:
+  rust-backend:
+    build: . # Accesses Dockerfile in current directory
+    ports:
+      - "3001:3001"
+    environment:
+      - DATABASE_URL=dev.db

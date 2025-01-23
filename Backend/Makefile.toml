@@ -1,6 +1,6 @@
 [tasks.run]
 description = "Run the seed script and start the backend in Docker"
 script = [
-    "docker build -t rust-backend .",
-    "docker run -p 3001:3001 rust-backend"
+    "docker compose down -v",
+    "docker compose up --build"
 ]

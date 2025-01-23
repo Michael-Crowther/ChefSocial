@@ -16,7 +16,6 @@ RUN cargo fetch
 # Copy the rest of the project files
 COPY . .
 
-
 # Run migrations with the correct path
 RUN diesel migration run --migration-dir ./src/db/migrations
 
