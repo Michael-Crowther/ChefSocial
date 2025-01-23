@@ -7,7 +7,13 @@ func fetchData<T: Decodable>(from endpoint: String) async throws -> T {
         throw URLError(.badURL)
     }
 
-    print("Fetching data from: \(fullURL)")
+
+    // Add timestamp
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+    let timestamp = dateFormatter.string(from: Date())
+    
+    print("[\(timestamp)] Fetching data from: \(fullURL)")
 
     let (data, response) = try await URLSession.shared.data(from: fullURL)
     guard let httpResponse = response as? HTTPURLResponse, 200..<300 ~= httpResponse.statusCode else {

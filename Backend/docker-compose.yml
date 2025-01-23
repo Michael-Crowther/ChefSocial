@@ -1,7 +1,19 @@
 services:
   rust-backend:
-    build: . # Accesses Dockerfile in current directory
+    image: rust:latest
+    container_name: rust-backend
+    working_dir: /Backend
     ports:
       - "3001:3001"
     environment:
-      - DATABASE_URL=dev.db
+      DATABASE_URL: local.db
+    volumes:
+      - .:/Backend
+    command: >
+      sh -c "
+        cargo install diesel_cli --no-default-features --features sqlite &&
+        diesel migration run --migration-dir ./src/db/migrations &&
+        cargo build --release &&
+        cargo run --bin seed &&
+        ./target/release/rust-backend
+      "
