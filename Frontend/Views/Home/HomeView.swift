@@ -52,12 +52,12 @@ struct HomeView: View {
             VStack {
                 if let user = userViewModel.user {
                     Text("Hello, \(user.name)!")
-                        .font(.title)
+                        .font(.custom("Amaranth-Regular", size: 30))
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                 } else {
                     Text("No user loaded yet.")
-                        .font(.headline)
+                        .font(.custom("Amaranth-Regular", size: 15))
                         .foregroundColor(.white)
                 }
             }
@@ -73,9 +73,10 @@ struct HomeView: View {
                         ForEach(recipes.indices, id: \.self) { index in
                             VStack(alignment: .leading, spacing: 8) {
                                 Text(recipes[index].name)
-                                    .font(.headline)
+                                    .font(.custom("Amaranth-Regular", size: 25))
+
                                 Text(recipes[index].author)
-                                    .font(.subheadline)
+                                    .font(.custom("Amaranth-Regular", size: 20))
                                     .foregroundColor(.gray)
                             }
                             .frame(height: 200)

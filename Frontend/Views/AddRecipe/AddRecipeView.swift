@@ -10,9 +10,9 @@ struct AddRecipeView: View {
     var body: some View {
         NavigationView {
             VStack {
-                Text("Add Post Page")
+                Text("Add Recipe Page")
             }
-            .navigationTitle("Add Post")
+            .navigationTitle("Add Recipe")
         }
     }
 }

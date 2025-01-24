@@ -11,6 +11,7 @@ services:
       - .:/Backend
     command: >
       sh -c "
+        rm -f /Backend/local.db &&
         cargo install diesel_cli --no-default-features --features sqlite &&
         diesel migration run --migration-dir ./src/db/migrations &&
         cargo build --release &&
