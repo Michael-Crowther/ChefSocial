@@ -1,24 +1,16 @@
 import SwiftUI
 
 struct AddRecipeView: View {
-    // Recipe fields
     @State private var name: String = ""
-    //@State private var imageUrls: String = ""
     @State private var ingredients: [String] = [""]
     @State private var instructions: [String] = [""]
     @State private var category: String = ""
-    //    @State private var tags: String = ""
     @State private var prepTime: String = ""
     @State private var cookTime: String = ""
-    //    @State private var totalTime: String = ""
     @State private var servings: String = ""
     @State private var difficulty: String = ""
     @State private var calories: String = ""
     @State private var macronutrients: String = ""
-    @State private var rating: String = ""
-    @State private var reviewCount: String = ""
-    @State private var source: String = ""
-    @State private var author: String = ""
     @State private var notes: String = ""
     @State private var equipment: String = ""
     @State private var dietaryInfo: String = ""
@@ -113,13 +105,10 @@ struct AddRecipeView: View {
                 
                 
                 Section(header: Text("Optional Information")) {
-                    //                    TextField("Tags (comma-separated)", text: $tags)
                     TextField("Prep Time (minutes)", text: $prepTime)
                         .keyboardType(.numberPad)
                     TextField("Cook Time (minutes)", text: $cookTime)
                         .keyboardType(.numberPad)
-                    //                    TextField("Total Time (minutes)", text: $totalTime)
-                    //                        .keyboardType(.numberPad)
                     Picker(selection: $difficulty, label: Text(difficulty.isEmpty ? "Select a Difficulty" : difficulty)
                         .foregroundColor(difficulty.isEmpty ? .gray : .black)
                         .opacity(difficulty.isEmpty ? 0.7 : 1)
@@ -132,15 +121,9 @@ struct AddRecipeView: View {
                     TextField("Calories", text: $calories)
                         .keyboardType(.numberPad)
                     TextField("Macronutrients", text: $macronutrients)
-                    TextField("Rating (0.0-5.0)", text: $rating)
-                        .keyboardType(.decimalPad)
-                    TextField("Review Count", text: $reviewCount)
-                        .keyboardType(.numberPad)
-                    TextField("Source", text: $source)
-                    TextField("Author", text: $author)
                     TextField("Notes", text: $notes)
                     TextField("Equipment", text: $equipment)
-                    TextField("Dietary Info", text: $dietaryInfo)
+                    TextField("Dietary Info (Gluten Free, etc.)", text: $dietaryInfo)
                 }
                 
                 Button(action: saveRecipe) {

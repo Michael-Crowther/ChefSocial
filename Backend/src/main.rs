@@ -1,17 +1,16 @@
-use axum::{routing::get, Json, Router};
+use axum::{routing::get, Router};
+use rust_backend::handlers::{recipes, users};
 use std::net::SocketAddr;
-
-use rust_backend::api::recipes::fetch_recipes;
-use rust_backend::api::users::fetch_random_user;
-use rust_backend::db::establish_connection;
-use rust_backend::db::models::{Recipe, User};
 
 #[tokio::main]
 async fn main() {
     let app = Router::new()
-        .route("/", get(handler))
-        .route("/random-user", get(random_user_handler))
-        .route("/recipes", get(recipe_handler));
+        .route("/", get(health_handler))
+        .route(
+            "/recipes",
+            get(recipes::get_recipes).post(recipes::create_recipe),
+        )
+        .route("/random-user", get(users::get_random_user));
 
     let addr = SocketAddr::from(([0, 0, 0, 0], 3001));
     println!("Server running at http://{}", addr);
@@ -22,22 +21,6 @@ async fn main() {
         .unwrap();
 }
 
-async fn handler() -> &'static str {
+async fn health_handler() -> &'static str {
     "Hello, from Rust Backend!"
-}
-
-async fn random_user_handler() -> Json<Option<User>> {
-    let mut conn = establish_connection();
-
-    let user = fetch_random_user(&mut conn);
-
-    Json(user)
-}
-
-pub async fn recipe_handler() -> Json<Vec<Recipe>> {
-    let mut conn = establish_connection();
-
-    let recipes = fetch_recipes(&mut conn);
-
-    Json(recipes)
 }
