@@ -29,7 +29,6 @@ class RecipeViewModel: ObservableObject {
         let id: Int
         let name: String
         let image_urls: String
-        let ingredients: String
         let category: String
         let author: String
     }

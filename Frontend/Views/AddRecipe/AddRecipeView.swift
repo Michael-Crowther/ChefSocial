@@ -1,49 +1,117 @@
 import SwiftUI
 
 struct AddRecipeView: View {
-    @State private var name: String = ""
-    @State private var ingredients: [String] = [""]
-    @State private var instructions: [String] = [""]
-    @State private var category: String = ""
-    @State private var prepTime: String = ""
-    @State private var cookTime: String = ""
-    @State private var servings: String = ""
-    @State private var difficulty: String = ""
-    @State private var calories: String = ""
-    @State private var macronutrients: String = ""
-    @State private var notes: String = ""
-    @State private var equipment: String = ""
-    @State private var dietaryInfo: String = ""
+    @State private var recipeDetails = RecipeDetails()
     
-    let categories = ["Appetizers", "Sides", "Breakfast", "Lunch", "Dinner", "Dessert", "Drinks", "Other"]
-    let difficulties = ["Beginner", "Intermediate", "Expert"]
-    
-    func saveRecipe() {
-        // Validation and save logic here
-        print("Saving recipe with name: \(name)")
+    struct RecipeDetails {
+        var name: String = ""
+        var imageUrls: String = ""
+        var category: RecipeCategory = .appetizers
+        var prepTime: String = ""
+        var cookTime: String = ""
+        var servings: String = ""
+        var difficulty: RecipeDifficulty = .beginner
+        var calories: String = ""
+        var macronutrients: String = ""
+        var notes: String = ""
+        var equipment: String = ""
+        var dietaryInfo: String = ""
     }
     
-    private func dismissKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    @State private var ingredients: [String] = [""]
+    @State private var instructions: [String] = [""]
+    
+    enum RecipeCategory: Int, CaseIterable, Identifiable {
+        case appetizers = 1, sides, breakfast, lunch, dinner, dessert, drinks, other
+        var id: Int { rawValue }
+        var displayName: String {
+            switch self {
+            case .appetizers: return "Appetizers"
+            case .sides: return "Sides"
+            case .breakfast: return "Breakfast"
+            case .lunch: return "Lunch"
+            case .dinner: return "Dinner"
+            case .dessert: return "Dessert"
+            case .drinks: return "Drinks"
+            case .other: return "Other"
+            }
+        }
+    }
+    
+    enum RecipeDifficulty: Int, CaseIterable, Identifiable {
+        case beginner = 1, intermediate, expert
+        var id: Int { rawValue }
+        var displayName: String {
+            switch self {
+            case .beginner: return "Beginner"
+            case .intermediate: return "Intermediate"
+            case .expert: return "Expert"
+            }
+        }
+    }
+
+    struct RecipeRequest: Encodable {
+        let name: String
+        let imageUrls: String
+        let category: Int32
+        let prepTime: Int?
+        let cookTime: Int?
+        let servings: Int?
+        let difficulty: Int32
+        let calories: Int?
+        let macronutrients: String?
+        let notes: String?
+        let dietaryInfo: String?
+        let equipment: String?
+    }
+    
+    struct RecipePayload: Encodable {
+        let recipe: RecipeRequest
+        let ingredients: [String]
+        let instructions: [String]
+    }
+    
+    func saveRecipe() {
+        let recipe = RecipeRequest(
+            name: recipeDetails.name,
+            imageUrls: recipeDetails.imageUrls,
+            category: Int32(recipeDetails.category.rawValue),
+            prepTime: Int(recipeDetails.prepTime),
+            cookTime: Int(recipeDetails.cookTime),
+            servings: Int(recipeDetails.servings),
+            difficulty: Int32(recipeDetails.difficulty.rawValue),
+            calories: Int(recipeDetails.calories),
+            macronutrients: recipeDetails.macronutrients,
+            notes: recipeDetails.notes,
+            dietaryInfo: recipeDetails.dietaryInfo,
+            equipment: recipeDetails.equipment
+        )
+
+        let payload = RecipePayload(recipe: recipe, ingredients: ingredients, instructions: instructions)
+
+        Task {
+            do {
+                try await postData(to: "/recipes", with: payload)
+                print("Recipe saved successfully!")
+            } catch {
+                print("Failed to save recipe: \(error)")
+            }
+        }
     }
     
     var body: some View {
         NavigationView {
             Form {
                 Section(header: Text("Basic Information")) {
-                    TextField("Name", text: $name)
+                    TextField("Name", text: $recipeDetails.name)
                     
-                    Picker(selection: $category, label: Text(category.isEmpty ? "Select a Category" : category)
-                        .foregroundColor(category.isEmpty ? .gray : .black)
-                        .opacity(category.isEmpty ? 0.7 : 1)
-                    ) {
-                        Text("Select a Category").tag(nil as String?)
-                        ForEach(categories, id: \.self) { category in
-                            Text(category).tag(category)
+                    Picker("Category", selection: $recipeDetails.category) {
+                        ForEach(RecipeCategory.allCases) { category in
+                            Text(category.displayName).tag(category as RecipeCategory)
                         }
                     }
                     
-                    TextField("Servings", text: $servings)
+                    TextField("Servings", text: $recipeDetails.servings)
                         .keyboardType(.numberPad)
                 }
                 
@@ -105,25 +173,21 @@ struct AddRecipeView: View {
                 
                 
                 Section(header: Text("Optional Information")) {
-                    TextField("Prep Time (minutes)", text: $prepTime)
+                    TextField("Prep Time (minutes)", text: $recipeDetails.prepTime)
                         .keyboardType(.numberPad)
-                    TextField("Cook Time (minutes)", text: $cookTime)
+                    TextField("Cook Time (minutes)", text: $recipeDetails.cookTime)
                         .keyboardType(.numberPad)
-                    Picker(selection: $difficulty, label: Text(difficulty.isEmpty ? "Select a Difficulty" : difficulty)
-                        .foregroundColor(difficulty.isEmpty ? .gray : .black)
-                        .opacity(difficulty.isEmpty ? 0.7 : 1)
-                    ) {
-                        Text("Select a Difficulty").tag(nil as String?)
-                        ForEach(difficulties, id: \.self) { difficulty in
-                            Text(difficulty).tag(difficulty)
+                    Picker("Difficulty", selection: $recipeDetails.difficulty) {
+                        ForEach(RecipeDifficulty.allCases) { difficulty in
+                            Text(difficulty.displayName).tag(difficulty as RecipeDifficulty)
                         }
                     }
-                    TextField("Calories", text: $calories)
+                    TextField("Calories", text: $recipeDetails.calories)
                         .keyboardType(.numberPad)
-                    TextField("Macronutrients", text: $macronutrients)
-                    TextField("Notes", text: $notes)
-                    TextField("Equipment", text: $equipment)
-                    TextField("Dietary Info (Gluten Free, etc.)", text: $dietaryInfo)
+                    TextField("Macronutrients", text: $recipeDetails.macronutrients)
+                    TextField("Notes", text: $recipeDetails.notes)
+                    TextField("Equipment", text: $recipeDetails.equipment)
+                    TextField("Dietary Info (Gluten Free, etc.)", text: $recipeDetails.dietaryInfo)
                 }
                 
                 Button(action: saveRecipe) {

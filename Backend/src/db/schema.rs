@@ -1,13 +1,41 @@
 // @generated automatically by Diesel CLI.
 
 diesel::table! {
+    categories (id) {
+        id -> Integer,
+        name -> Text,
+    }
+}
+
+diesel::table! {
+    difficulties (id) {
+        id -> Integer,
+        name -> Text,
+    }
+}
+
+diesel::table! {
+    ingredients (id) {
+        id -> Integer,
+        recipe_id -> Integer,
+        name -> Text,
+    }
+}
+
+diesel::table! {
+    instructions (id) {
+        id -> Integer,
+        recipe_id -> Integer,
+        step_number -> Integer,
+        description -> Text,
+    }
+}
+
+diesel::table! {
     recipes (id) {
         id -> Integer,
         name -> Text,
         image_urls -> Text,
-        ingredients -> Text,
-        instructions -> Text,
-        category -> Nullable<Text>,
         prep_time -> Nullable<Integer>,
         cook_time -> Nullable<Integer>,
         total_time -> Nullable<Integer>,
@@ -23,6 +51,7 @@ diesel::table! {
         dietary_info -> Nullable<Text>,
         created_at -> Timestamp,
         updated_at -> Timestamp,
+        category -> Integer,
     }
 }
 
@@ -40,6 +69,10 @@ diesel::table! {
 }
 
 diesel::allow_tables_to_appear_in_same_query!(
+    categories,
+    difficulties,
+    ingredients,
+    instructions,
     recipes,
     users,
 );

@@ -3,9 +3,7 @@ use dotenvy::dotenv;
 
 use rust_backend::db::establish_connection;
 use rust_backend::db::models::NewUser;
-use rust_backend::db::schema::recipes::dsl::*;
 use rust_backend::db::schema::users::dsl::*;
-use rust_backend::db::seed_data::fake_recipes;
 
 use fake::faker::internet::en::FreeEmail;
 use fake::faker::name::en::{FirstName, LastName};
@@ -45,17 +43,17 @@ fn main() {
         .execute(conn)
         .expect("Error inserting fake users");
 
-    let mut new_recipes = Vec::new();
+    // let mut new_recipes = Vec::new();
 
-    for fake_recipe in fake_recipes() {
-        new_recipes.push(fake_recipe);
-    }
+    // for fake_recipe in fake_recipes() {
+    //     new_recipes.push(fake_recipe);
+    // }
 
-    let inserted_recipes = diesel::insert_into(recipes)
-        .values(&new_recipes)
-        .execute(conn)
-        .expect("Error inserting fake recipes");
+    // let inserted_recipes = diesel::insert_into(recipes)
+    //     .values(&new_recipes)
+    //     .execute(conn)
+    //     .expect("Error inserting fake recipes");
 
     println!("Inserted {} fake users", inserted_users);
-    println!("Inserted {} fake recipes", inserted_recipes);
+    //println!("Inserted {} fake recipes", inserted_recipes);
 }

@@ -1,4 +1,4 @@
-use crate::db::schema::{recipes, users};
+use crate::db::schema::{categories, difficulties, ingredients, instructions, recipes, users};
 use chrono::NaiveDateTime;
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
@@ -25,14 +25,14 @@ pub struct NewUser {
     pub password_hash: String,
 }
 
-#[derive(Queryable, Serialize, Deserialize)]
+#[derive(Queryable, Serialize, Deserialize, Selectable)]
+#[diesel(table_name = recipes)]
+#[derive(Debug)]
 pub struct Recipe {
     pub id: i32,
     pub name: String,
     pub image_urls: String,
-    pub ingredients: String,
-    pub instructions: String,
-    pub category: Option<String>,
+    pub category: i32,
     pub prep_time: Option<i32>,
     pub cook_time: Option<i32>,
     pub total_time: Option<i32>,
@@ -55,9 +55,7 @@ pub struct Recipe {
 pub struct NewRecipe {
     pub name: String,
     pub image_urls: String,
-    pub ingredients: String,
-    pub instructions: String,
-    pub category: Option<String>,
+    pub category: i32,
     pub prep_time: Option<i32>,
     pub cook_time: Option<i32>,
     pub total_time: Option<i32>,
@@ -71,4 +69,59 @@ pub struct NewRecipe {
     pub notes: Option<String>,
     pub equipment: Option<String>,
     pub dietary_info: Option<String>,
+}
+
+#[derive(Deserialize)]
+pub struct NewRecipeWithDetails {
+    pub recipe: NewRecipe,
+    pub ingredients: Vec<String>,
+    pub instructions: Vec<String>,
+}
+
+#[derive(Queryable, Identifiable, Associations)]
+#[diesel(belongs_to(Recipe, foreign_key = recipe_id))]
+#[diesel(table_name = ingredients)]
+pub struct Ingredient {
+    pub id: i32,
+    pub recipe_id: i32,
+    pub name: String,
+}
+
+#[derive(Insertable)]
+#[diesel(table_name = ingredients)]
+pub struct NewIngredient {
+    pub recipe_id: i32,
+    pub name: String,
+}
+
+#[derive(Queryable, Identifiable, Associations)]
+#[diesel(belongs_to(Recipe, foreign_key = recipe_id))]
+#[diesel(table_name = instructions)]
+pub struct Instruction {
+    pub id: i32,
+    pub recipe_id: i32,
+    pub step_number: i32,
+    pub description: String,
+}
+
+#[derive(Insertable)]
+#[diesel(table_name = instructions)]
+pub struct NewInstruction {
+    pub recipe_id: i32,
+    pub step_number: i32,
+    pub description: String,
+}
+
+#[derive(Queryable, Identifiable)]
+#[diesel(table_name = categories)]
+pub struct Category {
+    pub id: i32,
+    pub name: String,
+}
+
+#[derive(Queryable, Identifiable)]
+#[diesel(table_name = difficulties)]
+pub struct Difficulty {
+    pub id: i32,
+    pub name: String,
 }
